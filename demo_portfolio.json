@@ -1,10 +1,10 @@
 {
   "schema": "portfolio-control-ai-export",
   "schema_version": "1.0",
-  "app_version": "3.7.0-demo",
+  "app_version": "3.7.1-demo",
   "generated_at": "2026-08-24T21:17:00+08:00",
   "base_currency": "HKD",
-  "purpose": "Synthetic public demo portfolio for screenshots, multi-language demonstrations and multi-currency base display.",
+  "purpose": "Synthetic public demo portfolio for screenshots and product demonstrations.",
   "demo_data": true,
   "app_state": {
     "fx": {
@@ -12,13 +12,7 @@
       "USD": 7.84,
       "USDT": 7.84,
       "CNY": 1.08,
-      "EUR": 9.15,
-      "GBP": 10.65,
-      "SGD": 6.1,
-      "JPY": 0.0525,
-      "AUD": 5.18,
-      "CAD": 5.72,
-      "CHF": 9.72
+      "EUR": 9.15
     },
     "settings": {
       "fxMode": "auto",
@@ -377,11 +371,7 @@
         "max": 14,
         "minKeepQty": 0,
         "tradeStep": 1,
-        "note": "",
-        "goldPurchaseTotal": 0,
-        "goldPurchaseCurrency": "HKD",
-        "goldLiquidationValue": 0,
-        "goldLiquidationCurrency": "HKD"
+        "note": ""
       },
       {
         "priceMode": "manual",
@@ -415,11 +405,7 @@
         "max": 12,
         "minKeepQty": 0,
         "tradeStep": 1,
-        "note": "Demo: 2 × 20 g investment-grade gold bars",
-        "goldPurchaseTotal": 33000,
-        "goldPurchaseCurrency": "HKD",
-        "goldLiquidationValue": 36000,
-        "goldLiquidationCurrency": "HKD"
+        "note": "Demo: 2 × 20 g investment-grade gold bars"
       },
       {
         "priceMode": "manual",

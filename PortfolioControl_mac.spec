@@ -20,6 +20,6 @@ pyz=PYZ(a.pure)
 exe=EXE(pyz,a.scripts,[],exclude_binaries=True,name='PortfolioControl',debug=False,bootloader_ignore_signals=False,strip=False,upx=False,console=False)
 coll=COLLECT(exe,a.binaries,a.datas,strip=False,upx=False,upx_exclude=[],name='PortfolioControl')
 app=BUNDLE(coll,name='Portfolio Control.app',bundle_identifier='com.portfoliocontrol.desktop',icon=str(ROOT/'assets'/'portfolio_control.icns') if (ROOT/'assets'/'portfolio_control.icns').exists() else None,info_plist={
-    'CFBundleName':'Portfolio Control','CFBundleDisplayName':'Portfolio Control','CFBundleShortVersionString':'3.7.0','CFBundleVersion':'3.7.0',
+    'CFBundleName':'Portfolio Control','CFBundleDisplayName':'Portfolio Control','CFBundleShortVersionString':'3.7.1','CFBundleVersion':'3.7.1',
     'NSHighResolutionCapable':True,'LSMinimumSystemVersion':'11.0'
 })

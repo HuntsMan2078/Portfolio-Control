@@ -32,7 +32,7 @@ from cloud_sync import CloudSyncManager
 from zoneinfo import ZoneInfo
 
 APP_NAME = "Portfolio Control"
-APP_VERSION = "3.7.0"
+APP_VERSION = "3.7.1"
 
 
 def bundle_root() -> Path:
