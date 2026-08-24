@@ -1,23 +1,39 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")"
+
 APP_VERSION="3.7.0"
 VENV=".build-venv-mac"
 RELEASE="release-macos"
 mkdir -p vendor "$RELEASE"
 
+ARCH="$(uname -m)"
+case "$ARCH" in
+  arm64)   PLATFORM_LABEL="Apple-Silicon" ;;
+  x86_64)  PLATFORM_LABEL="Intel" ;;
+  *)       PLATFORM_LABEL="$ARCH" ;;
+esac
+
 echo "============================================================"
 echo "Portfolio Control v${APP_VERSION} macOS builder"
-echo "Architecture: $(uname -m)"
+echo "Architecture: ${ARCH}"
 echo "============================================================"
 
 if ! command -v python3 >/dev/null 2>&1; then
   echo "Python 3 is required on the BUILD Mac."
-  if command -v brew >/dev/null 2>&1; then brew install python; else echo "Install Homebrew/Python, then rerun."; exit 1; fi
+  if command -v brew >/dev/null 2>&1; then
+    brew install python
+  else
+    echo "Install Homebrew/Python, then rerun."
+    exit 1
+  fi
 fi
-python3 -c 'import sys; assert sys.version_info >= (3,10), "Python 3.10+ required"; print("Python",sys.version.split()[0])'
 
-if [ ! -d "$VENV" ]; then python3 -m venv "$VENV"; fi
+python3 -c 'import sys; assert sys.version_info >= (3,10), "Python 3.10+ required"; print("Python", sys.version.split()[0])'
+
+if [ ! -d "$VENV" ]; then
+  python3 -m venv "$VENV"
+fi
 PYBIN="$VENV/bin/python"
 "$PYBIN" -m pip install --upgrade pip
 "$PYBIN" -m pip install 'pyinstaller==6.22.0' 'pywebview==6.2.1' tzdata 'cryptography>=45,<47'
@@ -30,7 +46,12 @@ if [ ! -x vendor/longbridge ]; then
     echo "Installing official Longbridge CLI on the BUILD Mac..."
     curl -sSL https://open.longbridge.com/longbridge/longbridge-terminal/install | sh
     export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
-    if command -v longbridge >/dev/null 2>&1; then cp "$(command -v longbridge)" vendor/longbridge; else echo "Longbridge was not found after installation."; exit 1; fi
+    if command -v longbridge >/dev/null 2>&1; then
+      cp "$(command -v longbridge)" vendor/longbridge
+    else
+      echo "Longbridge was not found after installation."
+      exit 1
+    fi
   fi
 fi
 chmod +x vendor/longbridge
@@ -58,21 +79,72 @@ fi
 
 rm -rf build dist
 "$PYBIN" -m PyInstaller --noconfirm --clean PortfolioControl_mac.spec
-APP="dist/Portfolio Control.app"
-[ -d "$APP" ] || { echo "macOS .app build failed"; exit 1; }
+SOURCE_APP="dist/Portfolio Control.app"
+[ -d "$SOURCE_APP" ] || { echo "macOS .app build failed"; exit 1; }
 
-if [ -n "${APPLE_SIGN_IDENTITY:-}" ]; then
-  echo "Signing with: $APPLE_SIGN_IDENTITY"
-  codesign --force --deep --options runtime --timestamp --sign "$APPLE_SIGN_IDENTITY" "$APP"
+# IMPORTANT: never sign/package the Finder-visible dist bundle directly.
+# Re-copy without resource forks / FinderInfo / extended attributes first.
+STAGE="$(mktemp -d /tmp/portfolio-control-release.XXXXXX)"
+trap 'rm -rf "$STAGE"' EXIT
+CLEAN_APP="$STAGE/Portfolio Control.app"
+
+ditto --norsrc --noextattr "$SOURCE_APP" "$CLEAN_APP"
+
+# Fail early if forbidden Finder metadata survived the clean copy.
+if xattr -lr "$CLEAN_APP" 2>/dev/null | grep -Eq 'com\.apple\.(ResourceFork|FinderInfo)'; then
+  echo "ERROR: FinderInfo/ResourceFork metadata still exists in clean app bundle."
+  exit 1
 fi
 
-DMG="$RELEASE/PortfolioControl_v${APP_VERSION}_$(uname -m).dmg"
-rm -f "$DMG"
-STAGE="$(mktemp -d)"
-cp -R "$APP" "$STAGE/"
+if [ -n "${APPLE_SIGN_IDENTITY:-}" ]; then
+  echo "Signing with Developer ID identity: $APPLE_SIGN_IDENTITY"
+  codesign --force --deep --options runtime --timestamp --sign "$APPLE_SIGN_IDENTITY" "$CLEAN_APP"
+else
+  echo "No APPLE_SIGN_IDENTITY set; applying ad-hoc signature."
+  codesign --force --deep --sign - --timestamp=none "$CLEAN_APP"
+fi
+
+# Verify the exact app that will enter the DMG.
+codesign --verify --deep --strict --verbose=2 "$CLEAN_APP"
+
 ln -s /Applications "$STAGE/Applications"
-hdiutil create -volname "Portfolio Control" -srcfolder "$STAGE" -ov -format UDZO "$DMG"
-rm -rf "$STAGE"
+
+DMG="$RELEASE/PortfolioControl-v${APP_VERSION}-macOS-${PLATFORM_LABEL}.dmg"
+rm -f "$DMG" "$DMG.sha256.txt"
+hdiutil create \
+  -volname "Portfolio Control" \
+  -srcfolder "$STAGE" \
+  -ov \
+  -format UDZO \
+  "$DMG"
+
+# Verify the disk image structure.
+hdiutil verify "$DMG"
+
+# Verify that the app signature also survived packaging into the DMG.
+MOUNT_POINT="$(mktemp -d /tmp/portfolio-control-mount.XXXXXX)"
+cleanup_mount() {
+  if mount | grep -Fq "on $MOUNT_POINT "; then
+    hdiutil detach "$MOUNT_POINT" -quiet || true
+  fi
+  rm -rf "$MOUNT_POINT"
+}
+trap 'cleanup_mount; rm -rf "$STAGE"' EXIT
+
+hdiutil attach "$DMG" -nobrowse -readonly -mountpoint "$MOUNT_POINT" -quiet
+codesign --verify --deep --strict --verbose=2 "$MOUNT_POINT/Portfolio Control.app"
+hdiutil detach "$MOUNT_POINT" -quiet
+rm -rf "$MOUNT_POINT"
+
 shasum -a 256 "$DMG" | tee "$DMG.sha256.txt"
-echo "Built: $DMG"
-echo "Architecture: $(uname -m). Intel and Apple Silicon DMGs should be built on matching Macs."
+
+echo "============================================================"
+echo "Built and verified: $DMG"
+echo "SHA256 file: $DMG.sha256.txt"
+echo "Architecture: $ARCH"
+if [ -z "${APPLE_SIGN_IDENTITY:-}" ]; then
+  echo "Signing: ad-hoc (GitHub distribution may require users to approve the app in macOS Security settings)."
+else
+  echo "Signing: $APPLE_SIGN_IDENTITY"
+fi
+echo "============================================================"
