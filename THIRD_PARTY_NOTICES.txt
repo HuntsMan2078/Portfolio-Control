@@ -1,0 +1,35 @@
+Portfolio Control v3.6.0 — Third-party components
+
+This build process uses or bundles the following third-party software:
+
+1. Longbridge Terminal / Longbridge CLI
+   Project: https://github.com/longbridge/longbridge-terminal
+   License: MIT
+   Purpose: Longbridge OAuth and market quote access.
+
+2. pywebview
+   Project: https://pywebview.flowrl.com/
+   License: BSD 3-Clause
+   Purpose: Windows desktop WebView host.
+
+3. PyInstaller
+   Project: https://pyinstaller.org/
+   Purpose: Freezes Python and application dependencies for Windows distribution.
+
+4. Inno Setup
+   Project: https://jrsoftware.org/isinfo.php
+   Purpose: Builds the Windows Setup.exe. It is a build-time dependency and is not bundled as an application runtime.
+
+5. tzdata
+   Purpose: IANA timezone database used by Python zoneinfo for US market-session selection.
+
+
+Remote public information / translation services used by v3.6.0:
+- Hong Kong Monetary Authority Open API and official RSS feeds
+- Federal Reserve official feeds and monetary-policy calendar
+- U.S. Bureau of Labor Statistics release calendar (ICS)
+- U.S. Bureau of Economic Analysis release schedule
+- MyMemory translation API (Translated.net) for optional English-to-Chinese news translation
+- U.S. Treasury Daily Treasury Par Yield Curve (2Y / 10Y reference yields)
+- Federal Reserve Bank of New York Markets Data API (EFFR)
+- Federal Reserve Bank of St. Louis FRED CSV graph endpoint (DGS2 / DGS10 fallback)

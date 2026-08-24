@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# PyInstaller
+build/
+dist/
+
+# Installers / releases
+release/
+release-macos/
+*.dmg
+*.exe
+
+# Portfolio Control user data
+portfolio.db
+*.db
+*.db-wal
+*.db-shm
+backups/
+exports/
+
+# Secrets
+secrets.json
+.env
+.env.*
+*.key
+*.pem
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+
+vendor/longbridge

@@ -1,0 +1,42 @@
+Portfolio Control v3.6.0 — 两台电脑云同步快速设置
+
+A. 只做一次：Supabase 项目
+1. 创建一个 Supabase Project。
+2. 打开 SQL Editor，把本包 supabase_setup.sql 全部执行一次。
+3. Project Settings / API 中复制：
+   - Project URL
+   - Anon / Publishable Key
+
+B. 第一台电脑（已有完整投资数据的电脑）
+1. 先在 Portfolio Control 里点“立即备份”。
+2. 打开“☁ 云同步设置”。
+3. 填 Project URL、Publishable Key、邮箱、Supabase 密码。
+4. 设置一个 Portfolio 同步密码（至少 8 位）。
+5. 如果还没有 Auth 用户：点“注册同步账户”；如收到验证邮件，先验证，再回来“连接 / 登录”。
+6. 确认状态变为“☁ 已同步”。第一台会把本机同步核心加密后上传。
+
+C. 第二台电脑（Windows / Mac 均可）
+1. 安装/打开同版本 Portfolio Control。
+2. 打开“☁ 云同步设置”。
+3. 填同一个 Project URL、Publishable Key、邮箱、Supabase 密码。
+4. 必须输入和第一台完全相同的 Portfolio 同步密码。
+5. 点“连接 / 登录”。如果第二台是空数据库，会自动拉取云端组合。
+
+D. 日常行为
+- 每次本机修改先立即写 SQLite。
+- 大约 2 秒后后台同步。
+- 断网不影响使用；网络恢复后会自动重试。
+- 两台电脑修改不同数据时会尝试自动合并。
+- 同一项被两台电脑改成不同值时，会出现冲突提示：
+  “采用云端” 或 “保留本机并上传”。
+
+E. 不会上云的内容
+- Longbridge OAuth Token
+- Marketaux Token
+- Supabase 登录密码
+- Portfolio 同步密码
+- 实时新闻与实时行情（每台设备自行刷新）
+
+本机数据位置：
+Windows: %LOCALAPPDATA%\PortfolioControl\
+macOS: ~/Library/Application Support/PortfolioControl/
