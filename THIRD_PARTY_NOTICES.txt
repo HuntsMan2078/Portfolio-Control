@@ -1,4 +1,4 @@
-Portfolio Control v3.6.0 — Third-party components
+Portfolio Control v3.7.0 — Third-party components
 
 This build process uses or bundles the following third-party software:
 
@@ -24,7 +24,7 @@ This build process uses or bundles the following third-party software:
    Purpose: IANA timezone database used by Python zoneinfo for US market-session selection.
 
 
-Remote public information / translation services used by v3.6.0:
+Remote public information / translation services used by v3.7.0:
 - Hong Kong Monetary Authority Open API and official RSS feeds
 - Federal Reserve official feeds and monetary-policy calendar
 - U.S. Bureau of Labor Statistics release calendar (ICS)

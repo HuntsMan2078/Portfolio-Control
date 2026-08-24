@@ -1,4 +1,4 @@
-Portfolio Control v3.6.0 — macOS Builder
+Portfolio Control v3.7.0 — macOS Builder
 
 1. 把整个 portfolio_manager_v3_6_0 文件夹放到 Mac。
 2. 打开 Terminal，cd 进入目录。

@@ -32,7 +32,7 @@ from cloud_sync import CloudSyncManager
 from zoneinfo import ZoneInfo
 
 APP_NAME = "Portfolio Control"
-APP_VERSION = "3.6.0"
+APP_VERSION = "3.7.0"
 
 
 def bundle_root() -> Path:
@@ -1338,7 +1338,7 @@ def fetch_gold_hkd() -> tuple[float | None, dict[str, Any], str | None]:
 
 
 def fetch_fx_hkd() -> tuple[dict[str, float], dict[str, Any], str | None]:
-    primary = "https://api.frankfurter.dev/v2/rates?base=HKD&quotes=USD,CNY,EUR&providers=HKMA"
+    primary = "https://api.frankfurter.dev/v2/rates?base=HKD&quotes=USD,CNY,EUR,GBP,SGD,JPY,AUD,CAD,CHF"
     try:
         rows = _read_json_url(primary)
         rates_hkd: dict[str, float] = {"HKD": 1.0}
@@ -1352,10 +1352,12 @@ def fetch_fx_hkd() -> tuple[dict[str, float], dict[str, Any], str | None]:
                 continue
             rates_hkd[quote] = 1.0 / rate
             date = date or row.get("date")
-        if not all(k in rates_hkd for k in ("USD", "CNY", "EUR")):
-            raise ValueError("Frankfurter 未返回完整 USD/CNY/EUR 汇率")
+        required = ("USD", "CNY", "EUR", "GBP", "SGD", "JPY", "AUD", "CAD", "CHF")
+        if not all(k in rates_hkd for k in required):
+            missing = ",".join(k for k in required if k not in rates_hkd)
+            raise ValueError(f"Frankfurter 未返回完整汇率：{missing}")
         rates_hkd["USDT"] = rates_hkd["USD"]
-        return rates_hkd, {"source": "Frankfurter · HKMA", "date": date, "usdt_note": "USDT 按 USD/HKD 参考汇率折算"}, None
+        return rates_hkd, {"source": "Frankfurter", "date": date, "usdt_note": "USDT 按 USD/HKD 参考汇率折算"}, None
     except Exception as primary_error:
         fallback = "https://open.er-api.com/v6/latest/USD"
         try:
@@ -1364,7 +1366,7 @@ def fetch_fx_hkd() -> tuple[dict[str, float], dict[str, Any], str | None]:
                 raise ValueError(data.get("error-type") or "ExchangeRate-API 返回失败")
             r = data["rates"]
             usd_hkd = float(r["HKD"])
-            rates_hkd = {"HKD": 1.0, "USD": usd_hkd, "USDT": usd_hkd, "CNY": usd_hkd / float(r["CNY"]), "EUR": usd_hkd / float(r["EUR"])}
+            rates_hkd = {"HKD": 1.0, "USD": usd_hkd, "USDT": usd_hkd, **{k: usd_hkd / float(r[k]) for k in ("CNY","EUR","GBP","SGD","JPY","AUD","CAD","CHF")}}
             return rates_hkd, {"source": "ExchangeRate-API Open", "date": data.get("time_last_update_utc"), "attribution": "https://www.exchangerate-api.com", "usdt_note": "USDT 按 USD/HKD 参考汇率折算"}, None
         except Exception as fallback_error:
             return {}, {}, f"自动汇率失败：Frankfurter={primary_error}; fallback={fallback_error}"

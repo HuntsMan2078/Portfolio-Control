@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")"
-APP_VERSION="3.6.0"
+APP_VERSION="3.7.0"
 VENV=".build-venv-mac"
 RELEASE="release-macos"
 mkdir -p vendor "$RELEASE"

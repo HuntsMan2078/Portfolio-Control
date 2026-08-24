@@ -59,6 +59,33 @@ Portfolio Control brings stocks, cryptocurrency, gold and cash into one local-fi
 
 # Features
 
+## 🌐 Multilingual UI & Personalization
+
+Portfolio Control v3.7 adds device-local interface personalization without mixing UI preferences into portfolio sync data.
+
+Interface languages:
+
+- Simplified Chinese
+- Traditional Chinese (Hong Kong)
+- English
+
+Built-in themes:
+
+- Ocean Blue
+- Emerald
+- Graphite
+- Midnight
+- Burgundy
+- Warm Sand
+
+Language and theme preferences stay on the current device, so different computers can use different interfaces while sharing the same portfolio data.
+
+### Demo Mode
+
+A synthetic demo portfolio can be loaded for screenshots, product demonstrations and first-time exploration. Demo Mode is isolated from the real SQLite portfolio state and does not trigger Supabase synchronization.
+
+---
+
 ## 📊 Multi-Asset Portfolio
 
 Manage multiple asset types inside one portfolio.
@@ -86,6 +113,29 @@ Each position can track information such as:
 - Take-profit rules
 - Stop-loss rules
 - Minimum holding quantity
+
+---
+
+## 💱 Multi-Currency Base
+
+Portfolio Control separates **native asset currency** from the **portfolio base currency**.
+
+Supported display/base currencies include:
+
+- HKD
+- USD
+- CNY
+- EUR
+- GBP
+- SGD
+- JPY
+- AUD
+- CAD
+- CHF
+
+Changing the base currency changes portfolio totals, P&L, history, risk suggestions and value-based rebalancing inputs without rewriting native quotes. For example, a Tencent position may keep its quote in HKD while the total portfolio is displayed in USD.
+
+Base currency is a local device preference and is not part of cloud portfolio sync.
 
 ---
 
@@ -693,6 +743,16 @@ Portfolio Control 希望把這些資訊集中在一個桌面工作區內管理�
 - 上下限
 - 止盈規則
 - 止損規則
+
+---
+
+### 💱 多幣種基準貨幣
+
+Portfolio Control 會把 **資產原始報價幣種** 與 **投資組合基準貨幣** 分開處理。
+
+目前支援 HKD、USD、CNY、EUR、GBP、SGD、JPY、AUD、CAD 及 CHF。
+
+切換基準貨幣後，總資產、盈虧、歷史、風控建議及按市值調倉的輸入都會跟隨轉換，但個別資產的原始報價幣種不會被改寫。基準貨幣屬於本機顯示偏好，不會跟隨投資組合上傳雲端。
 
 ---
 
