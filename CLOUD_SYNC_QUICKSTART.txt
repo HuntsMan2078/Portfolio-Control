@@ -1,4 +1,4 @@
-Portfolio Control v3.7.0 — 两台电脑云同步快速设置
+Portfolio Control v3.7.1 — 两台电脑云同步快速设置
 
 A. 只做一次：Supabase 项目
 1. 创建一个 Supabase Project。
