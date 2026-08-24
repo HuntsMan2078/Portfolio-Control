@@ -83,7 +83,6 @@ export APPLE_SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)"
 ./build_macos.sh
 ```
 
-脚本会做 Developer ID codesign。正式对外分发还建议进一步做 Apple notarization。
 
 ## 数据位置
 
