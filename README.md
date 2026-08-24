@@ -607,39 +607,49 @@ Prebuilt Windows installers will be published through:
 
 # 📸 Screenshots
 
-Product screenshots will be added before the public launch.
+# 📸 Screenshots
 
-Recommended showcase:
+## Portfolio Dashboard
 
-### Dashboard
+A unified overview of portfolio allocation, target weights, macro indicators and risk alerts.
 
-<!--
-![Dashboard](docs/screenshots/dashboard.png)
--->
+![Portfolio Control Dashboard](docs/screenshots/dashboard-en-ocean.png)
 
-### Rebalancing
+## Risk Control
 
-<!--
-![Rebalancing](docs/screenshots/rebalancing.png)
--->
+Rule-based take-profit, stop-loss and position-management suggestions.
 
-### Risk Control
+![Risk Control](docs/screenshots/risk-en-midnight.png)
 
-<!--
-![Risk Control](docs/screenshots/risk-control.png)
--->
+## Investment Workspace
 
-### Financial Calendar
+Calendar, reminders, portfolio events and investment decision tracking.
 
-<!--
-![Financial Calendar](docs/screenshots/calendar.png)
--->
+![Investment Workspace](docs/screenshots/workspace-zh-hk-emerald.png)
 
-### Macro Indicators
+## Multi-Asset P&L
 
-<!--
-![Macro Indicators](docs/screenshots/macro.png)
--->
+Unified cost basis and unrealized profit and loss across stocks, cryptocurrency and gold.
+
+![Multi-Asset P&L](docs/screenshots/pnl-en-graphite.png)
+
+## Financial Intelligence
+
+Upcoming macroeconomic events and portfolio-relevant financial information.
+
+![Financial Intelligence](docs/screenshots/financial-intel-zh-hk.png)
+
+## Personalization
+
+Portfolio Control supports:
+
+- Simplified Chinese
+- Traditional Chinese (Hong Kong)
+- English
+- Multiple portfolio base currencies
+- Six visual themes
+
+![Personalization](docs/screenshots/personalization.png)
 
 ---
 
