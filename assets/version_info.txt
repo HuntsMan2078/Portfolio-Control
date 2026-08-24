@@ -15,12 +15,12 @@ VSVersionInfo(
         u'040904B0',
         [StringStruct(u'CompanyName', u'Portfolio Control'),
          StringStruct(u'FileDescription', u'Portfolio Control Desktop'),
-         StringStruct(u'FileVersion', u'3.6.0'),
+         StringStruct(u'FileVersion', u'3.7.1'),
          StringStruct(u'InternalName', u'PortfolioControl'),
          StringStruct(u'LegalCopyright', u'Private portfolio management application'),
          StringStruct(u'OriginalFilename', u'PortfolioControl.exe'),
          StringStruct(u'ProductName', u'Portfolio Control'),
-         StringStruct(u'ProductVersion', u'3.6.0')])
+         StringStruct(u'ProductVersion', u'3.7.1')])
     ]),
     VarFileInfo([VarStruct(u'Translation', [1033, 1200])])
   ]
