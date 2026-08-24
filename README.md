@@ -605,7 +605,6 @@ Prebuilt Windows installers will be published through:
 
 ---
 
-# 📸 Screenshots
 
 # 📸 Screenshots
 
